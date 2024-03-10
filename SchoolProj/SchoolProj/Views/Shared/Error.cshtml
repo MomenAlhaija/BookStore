@@ -1,0 +1,32 @@
+﻿@model ErrorModel
+@{ 
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Error</title>
+    <link href="~/Content/ErrorStyle.css" rel="stylesheet" />
+</head>
+<body>
+    <h5>OOOPs...Error!</h5>
+    <h1>@Model.HttpStatusCode.ToString().ToCharArray()[0]</h1>
+    <h1>@Model.HttpStatusCode.ToString().ToCharArray()[1] @Model.HttpStatusCode.ToString().ToCharArray()[2]</h1>
+    <div class="box">
+        <span></span><span></span>
+        <span></span><span></span>
+        <span></span>
+    </div>
+    <div class="box">
+        <span></span><span></span>
+        <span></span><span></span>
+        <span></span>
+    </div>
+    <p>
+        @Model.ErrorMessage
+        <br />
+        <a href="@Url.Action("Index","Home")">Go Back</a>
+        or ReEnter Here Later.
+    </p>
+</body>
+</html>

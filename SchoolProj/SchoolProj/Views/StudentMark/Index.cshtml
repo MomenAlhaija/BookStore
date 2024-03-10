@@ -1,0 +1,63 @@
+﻿@{
+    ViewBag.Title = "Student Marks";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using SchoolProj.Enum
+@using SchoolProj.DLL.Model
+@using SchoolProj.Langauges 
+@model StudentMarksModel
+<h3 class="text text-danger">@ViewBag.ErrorMessage</h3>
+<div class="container mt-5" style="height:77vh">
+    <div class="row">
+        <div class="col-md-6">
+            <h2>@Localization.StudentInformation</h2>
+            <table class="table table-striped">
+                <tr>
+                    <th>@Localization.FullNameAr:</th>
+                    <td>@Model.student.FullNameAr</td>
+                </tr>
+                <tr>
+                    <th>@Localization.FullNameEn:</th>
+                    <td>@Model.student.FullNameEn</td>
+                </tr>
+                <tr>
+                    <th>@Localization.StudentId:</th>
+                    <td>@Model.student.StudentId</td>
+                </tr>
+                <tr>
+                    <th>@Localization.Age:</th>
+                    <td>@Model.student.Age</td>
+                </tr>
+                <tr>
+                    <th>@Localization.UserName:</th>
+                    <td>@Model.student.UserName</td>
+                </tr>
+                <tr>
+                    <th>@Localization.ClassName:</th>
+                    <td>@Model.ClassNameAr</td>
+                </tr>
+                <tr>
+                    <th>@Localization.Gender:</th>
+                    <td>@((Gender)Model.student.Gender)</td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <h2>@Localization.Marks</h2>
+            <table class="table table-striped">
+                <tr>
+                    <th>@Localization.Subject</th>
+                    <th>@Localization.Mark</th>
+                </tr>
+                @foreach (var sub in Model?.Marks)
+                {
+                    <tr>
+                        <td>@sub.MaterialNameAr</td>
+                        <td>@sub.Grade</td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+</div>
+

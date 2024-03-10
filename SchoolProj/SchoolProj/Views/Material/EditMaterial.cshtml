@@ -1,0 +1,29 @@
+﻿@using SchoolProj.DLL.Model
+@using SchoolProj.DLL.Shared
+@using SchoolProj.Langauges
+@using SchoolPro.shared.Consts
+@{
+    ViewBag.Title = Localization.EditMaterial;
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@model MaterialModel
+<form method="post" style="width:100%;padding:0% 5%">
+    <h3 class="text text-danger">@ViewBag.ErrorMessage</h3>
+    <input type="hidden" name="@nameof(Model.Id)" value="@Model.Id" />
+    <div class="form-group">
+        <label for="MaterialNameAr">@Localization.MaterialNameAr</label>
+        <input type="text" value="@Model.MaterialNameAr" class="form-control" id="MaterialNameAr" placeholder="@Localization.PleaseEnter @Localization.MaterialNameAr" name="@nameof(Model.MaterialNameAr)"  maxlength="@ClassConsts.MaxClassNameLength" required>
+        @Html.ValidationMessageFor(model => model.MaterialNameAr, "", new { @class = "text-danger" })
+
+    </div>
+    <div class="form-group">
+        <label for="MaterialNameEn">@Localization.MaterialNameEn</label>
+        <input type="text" value="@Model.MaterialNameEn" class="form-control" id="MaterialNameEn" placeholder="@Localization.PleaseEnter @Localization.MaterialNameEn" name="@nameof(Model.MaterialNameEn)"  maxlength="@ClassConsts.MaxClassNameLength">
+        @Html.ValidationMessageFor(model => model.MaterialNameEn, "", new { @class = "text-danger" })
+    </div>
+    <button class="btn btn-primary" style="margin-top:25px" type="submit">@Localization.SaveChanges</button>
+    <a class="btn btn-secondary" href="@Url.Action("Index")" style="margin-top:25px">@Localization.BackToList</a>
+</form>
+
+
+

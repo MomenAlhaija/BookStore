@@ -1,0 +1,176 @@
+﻿@{Layout = null;}
+@using SchoolProj.Langauges;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="~/Content/font-awesome/css/all.min.css" rel="stylesheet" />
+    <link href="~/Content/Admin-Panel/styles.css" rel="stylesheet" />
+    <title>@ViewBag.Title-EduSite</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @{ int userType; }
+    <link href="~/wwwroot/lib/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <title>Admin Dashboard</title>
+</head>
+
+<body dir="@(Request.Cookies["Language"]?.Value == "ar" ? "rtl" : "ltr")" >
+    <div class="d-flex" id="wrapper">
+        <div class="bg-white" id="sidebar-wrapper">
+            <div class="sidebar-heading text-center py-4 primary-text fs-4 fw-bold text-uppercase border-bottom">
+                <i class="fas fa-user-secret me-2"></i>EduSite
+
+            </div>
+            <div class="list-group list-group-flush my-3">
+                <a href="@Url.Action("Index", "Admin")" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
+                    <i class="fas fa-dashboard"></i>@Localization.Dashboard
+                </a>
+                <a href="@Url.Action("Index", "Material")" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
+                    <i class="fas fa-book"></i>@Localization.Materials
+                </a>
+                <a href="@Url.Action("Index", "Class")" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
+                    <i class="fas fa-chalkboard"></i>@Localization.Classes
+                </a>
+                <a href="@Url.Action("Index", "Student")" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
+                    <i class="fas fa-user-graduate me-2"></i>@Localization.Students
+                </a>
+                <a href="@Url.Action("Index", "Teacher")" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
+                    <i class="fas fa-chalkboard-teacher me-2"></i>@Localization.Teachers
+                </a>
+                <a href="@Url.Action("Index", "User")" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
+                    <i class="fas fa-user"></i>@Localization.Users
+                </a>
+                @if (Session["userId"] != null)
+                {
+                    <a class="list-group-item list-group-item-action bg-transparent second-text fw-bold" href="@Url.Action("ChangePassword","Login")">
+
+                        <i class="fas fa-key" style="color:orangered;"></i>@Localization.ChangePassword
+                    </a>
+
+                    <a asp-action="Logout" asp-controller="LogIn" class="list-group-item list-group-item-action bg-transparent second-text fw-bold" href="@Url.Action("Logout","Login")">
+                        <i class="fas fa-sign-out-alt" style="color: red;"></i>@Localization.Logout
+                    </a>
+                }
+
+
+            </div>
+        </div>
+        <div id="page-content-wrapper">
+
+            <nav class="navbar navbar-expand-lg navbar-light bg-transparent py-4 px-4">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-align-left primary-text fs-4 me-3" id="menu-toggle"></i>
+                    <h2 class="fs-2 m-0">
+                        @ViewBag.Title
+                    </h2>
+                </div>
+                <div style="width:100%;display:flex;justify-content:center">
+                    <select id="languageSelector"  onchange="changeLanguage()" style="background-color:#cbf7e4">
+                        <option value="en" @( Request.Cookies["Language"]?.Value == "en" ? "selected" : "")>@Localization.English</option>
+                        <option value="ar" @( Request.Cookies["Language"]?.Value == "ar" ? "selected" : "")>@Localization.Arabic</option>
+                    </select>
+                </div>
+              
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle second-text fw-bold" href="#" id="navbarDropdown"
+                               role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user me-2"></i>
+                                @if (Session["userId"] != null)
+                                {
+                                    SchoolProj.DLL.Services.UserService userService = new SchoolProj.DLL.Services.UserService();
+                                    var user = userService.GetUserByID(int.Parse(Session["userId"].ToString()));
+                                    if (user != null)
+                                    {
+                                        <text>@user.FullName</text>
+                                    }
+                                }
+                            </a>
+                            @if (Session["UserId"] != null)
+                            {
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="@Url.Action("Profile", "Admin")">@Localization.Profile</a></li>
+
+
+                                    <li class="nav-item"><a class="nav-link text-dark" href="@Url.Action("ChangePassword","Login")">@Localization.ChangePassword</a></li>
+
+
+                                    <li><a class="dropdown-item text text-danger" href="@Url.Action("Logout", "Login")">@Localization.Logout</a></li>
+
+
+                                </ul>
+                            }
+                        </li>
+                    </ul>
+                </div>
+
+
+            </nav>
+            @RenderBody()
+        </div>
+
+        <script>
+            var el = document.getElementById("wrapper");
+            var toggleButton = document.getElementById("menu-toggle");
+
+            toggleButton.onclick = function () {
+                el.classList.toggle("toggled");
+            };
+        </script>
+        <script src="~/wwwroot/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/wwwroot/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+        <script src="~/wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+        <script src="~/wwwroot/lib/sweetalert2/sweetalert2.min.js"></script>
+        <script>
+            function changeLanguage() {
+                var selectedLanguage = $('#languageSelector').val();
+                changeLanguageViaAjax(selectedLanguage);
+            }
+
+            function changeLanguageViaAjax(language) {
+                $.ajax({
+                    url: '/Home/ChangeLanguage',
+                    type: 'POST',
+                    data: { language: language },
+                    success: function (result) {
+                        window.location.reload();
+                    },
+                });
+            }
+            $(document).ready(function () {
+                checkToggledClass(); 
+                function checkToggledClass() {
+                    
+                }
+                $('#wrapper').click(function () {
+                    var wrapper = $('#wrapper');
+                    var sidebarWrapper = $('#sidebar-wrapper');
+
+                    if (wrapper.hasClass('toggled')) {
+                        sidebarWrapper.fadeOut(); // Fade out the sidebar
+                    } else {
+                        sidebarWrapper.fadeIn(); // Fade in the sidebar
+                    }
+                });
+
+            });
+
+        </script>
+        @RenderSection("scripts", required: false)
+
+</body>
+
+</html>

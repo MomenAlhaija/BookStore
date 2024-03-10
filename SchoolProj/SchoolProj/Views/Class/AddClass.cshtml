@@ -1,0 +1,34 @@
+﻿@using SchoolProj.DLL.Shared
+@using SchoolPro.shared.Consts
+@using SchoolProj.DLL.Model
+@using SchoolProj.Langauges;
+@model ClassModel
+@{
+    ViewBag.Title = "Add Class";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<form method="post" style="width:100%;padding:0% 5%">
+    <h3 class="text text-danger">@ViewBag.ErrorMessage</h3>
+    <div class="form-group">
+        <label for="ClassNameAr">@Localization.ClassNameAr</label>
+        <input type="text" value="@Model.ClassNameAr" class="form-control" id="ClassNameAr" placeholder="@Localization.PleaseEnter @Localization.ClassNameAr" name="@nameof(Model.ClassNameAr)"  maxlength="@ClassConsts.MaxClassNameLength" required>
+        @Html.ValidationMessageFor(model => model.ClassNameAr, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        <label for="ClassNameEn">@Localization.ClassNameEn</label>
+        <input type="text" value="@Model.ClassNameEn" class="form-control" id="ClassNameEn" placeholder="@Localization.PleaseEnter @Localization.ClassNameEn" name="@nameof(Model.ClassNameEn)"  maxlength="@ClassConsts.MaxClassNameLength">
+        @Html.ValidationMessageFor(model => model.ClassNameEn, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.MaterialsIds">@Localization.Materials</label>
+        @Html.ListBoxFor(model => model.MaterialsIds, Model.MaterialItems, new { @class = "form-control" ,@required = "required" })
+        @Html.ValidationMessageFor(model => model.MaterialsIds, "", new { @class = "text-danger" })
+    </div>
+    <div>
+        <button class="btn btn-primary" style="margin-top:25px" type="submit">Add</button>
+        <a class="btn btn-secondary" style="margin-top:26px" href="@Url.Action("Index")">Back To List</a>
+    </div>
+</form>
+
+

@@ -1,0 +1,79 @@
+﻿
+@{
+    ViewBag.Title = Localization.Dashboard;
+}
+@using SchoolProj.Langauges
+@model SchoolProj.DLL.Model.StaticsModel
+<div id="page-content-wrapper">
+
+    <div class="container-fluid px-4">
+        <div class="row g-3 my-2">
+            <div class="col-md-3">
+                <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
+                    <div>
+                        <h3 class="fs-2">@Model.TotalUsers</h3>
+                        <p class="fs-5">@Localization.Users</p>
+                    </div>
+                    <i class="fas fa-user fs-1 primary-text border rounded-full secondary-bg p-3"></i>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
+                    <div>
+                        <h3 class="fs-2">@Model.TotalClasses</h3>
+                        <p class="fs-5">@Localization.Classes</p>
+                    </div>
+                    <i class="fas fa-graduation-cap fs-1 primary-text border rounded-full secondary-bg p-3"></i>
+
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
+                    <div>
+                        <h3 class="fs-2">@Model.TotalStudents</h3>
+                        <p class="fs-5">@Localization.Students</p>
+                    </div>
+                    <i class="fas fa-user-graduate fs-1 primary-text border rounded-full secondary-bg p-3"></i>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
+                    <div>
+                        <h3 class="fs-2">@Model.TotalTeachers</h3>
+                        <p class="fs-5">@Localization.Teachers</p>
+                    </div>
+                    <i class="fas fa-chalkboard-teacher fs-1 primary-text border rounded-full secondary-bg p-3"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="row my-5">
+            <h3 class="fs-4 mb-3">@Localization.CreativeTeachers</h3>
+            <div class="col">
+                <table class="table bg-white rounded shadow-sm  table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">@Localization.TeacherName</th>
+                            <th scope="col">@Localization.TeacherEmail</th>
+                            <th scope="col">@Localization.Material</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var teacher in Model.Teachers)
+                        {
+                            <tr>
+                                <td>@teacher.FullNameAr</td>
+                                <td>@teacher.UserName</td>
+                                <td>@teacher.MaterialName</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>

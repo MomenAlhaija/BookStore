@@ -1,0 +1,80 @@
+﻿@model IEnumerable<SchoolProj.DLL.Model.TeacherModel>
+@using SchoolProj.Enum
+@using SchoolProj.Langauges
+@{
+    ViewBag.Title = Localization.Teachers;
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div style="width:100%;padding:1%">
+    <h3 class="text text-danger">@ViewBag.ErrorMessage</h3>
+    <a class="btn btn-info mb-3" href="@Url.Action("AddTeacher")">@Localization.AddTeacher</a>
+    <div class="col">
+        <table class="table bg-white rounded shadow-sm  table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">@Localization.Email</th>
+                    <th scope="col">@Localization.FullNameAr</th>
+                    <th scope="col">@Localization.FullNameEn</th>
+                    <th scope="col">@Localization.Gender</th>
+                    <th scope="col">@Localization.MaterialName</th>
+                    <th>@Localization.Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var teacher in Model.ToList())
+                {
+                    <tr>
+                        <td>@teacher.UserName</td>
+                        <td>@teacher.FullNameAr</td>
+                        <td>@teacher.FullNameEn</td>
+                        <td>@((Gender)(teacher.Gender))</td>
+                        <td>@teacher.MaterialName</td>
+                        <td>
+                            <a class="btn btn-info" href="@Url.Action("EditTeacher", new { teacherId = teacher.TeacherId })">@Localization.Edit</a>
+                            <a class="btn btn-danger" onclick="deleteTeacher(@teacher.TeacherId,@teacher.UserId)">@Localization.Delete</a>
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    function deleteTeacher(teacherId, userId) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You will not be able to recover this class!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("Delete")",
+                    data: { teacherId: teacherId, userId: userId },
+                    success: function () {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Teacher Deleted Successfully',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 1500);
+                    },
+                    error: function () {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Something went wrong!',
+                        });
+                    }
+                });
+            }
+        });
+    }
+</script>

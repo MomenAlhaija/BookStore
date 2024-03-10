@@ -1,0 +1,29 @@
+﻿@using SchoolProj.Langauges
+@{
+    ViewBag.Title = Localization.Classes;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model SchoolProj.DLL.Model.ClassTeacherModel
+<h3 class="text text-danger">@ViewBag.ErrorMessage</h3>
+<div style="height:78vh">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>@Localization.ClassNameAr</th>
+                <th>@Localization.ClassNameEn</th>
+                <th>@Localization.ViewStudents </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Classes)
+            {
+                <tr>
+                    <td>@item.ClassNameAr</td>
+                    <td>@item.ClassNameEn</td>
+                    <td><a style="text-decoration:none" href="@Url.Action("StudentsInClass",new { classId = item.Id,materialId=Model.MaterialId })">@Localization.ViewStudents</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

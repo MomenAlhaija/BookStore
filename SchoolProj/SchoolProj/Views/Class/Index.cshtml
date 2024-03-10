@@ -1,0 +1,80 @@
+﻿@model IEnumerable<SchoolProj.DLL.Model.ClassModel>
+@using SchoolProj.Langauges
+@{
+    ViewBag.Title = Localization.Classes;
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div style="width:100%;padding:3% 5%">
+    <a class="btn btn-info mb-3" href="@Url.Action("AddClass")">@Localization.AddClass</a>
+    <div class="col">
+        <table class="table bg-white rounded shadow-sm  table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">@Localization.ClassNameAr</th>
+                    <th scope="col">@Localization.ClassNameEn</th>
+                    <th>@Localization.Materials</th>
+                    <th scope="col">@Localization.Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var cl in Model.ToList())
+                {
+                    <tr>
+                        <td>
+                            @cl.ClassNameAr
+                        </td>
+                        <td>@cl.ClassNameEn</td>
+                        <td>
+                            @foreach (var mat in cl.Materials.ToList())
+                            {
+                                <span>@mat.MaterialNameAr ||</span>
+                            }
+                        </td>
+                        <td>
+                            <a class="btn btn-info" href="@Url.Action("Edit",new { classId = @cl.Id })">@Localization.Edit</a>
+                            <a class="btn btn-danger" onclick="deleteClass(@cl.Id)">@Localization.Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    function deleteClass(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You will not be able to recover this class!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("Delete","Class")",
+                    data: { classId: id },
+                    success: function () {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Class Deleted Successfully',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 1500);
+                    },
+                    error: function () {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Something went wrong!',
+                        });
+                    }
+                });
+            }
+        });
+    }
+</script>

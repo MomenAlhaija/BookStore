@@ -1,0 +1,200 @@
+﻿<!DOCTYPE html>
+@using SchoolProj.Langauges
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="~/template/img/logo.png" />
+    <title>Education</title>
+    <link href="~/wwwroot/lib/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <link href="~/Content/template/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/template/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/template/css/style.css" rel="stylesheet" />
+</head>
+<body>
+
+    <!-- Header -->
+    <header id="header" class="transparent-nav">
+        <div class="container">
+
+            <div class="navbar-header">
+                <!-- Logo -->
+                <div class="navbar-brand">
+                    <a class="logo" href="@Url.Action("Index","Home")">
+                        <img src="~/Content/template/img/logo-alt.png" alt="logo">
+                    </a>
+                </div>
+                <!-- /Logo -->
+                <!-- Mobile toggle -->
+                <button class="navbar-toggle">
+                    <span></span>
+                </button>
+                <!-- /Mobile toggle -->
+            </div>
+
+            <!-- Navigation -->
+            <nav id="nav">
+                <ul class="main-menu nav navbar-nav navbar-right">
+                    <li>
+                        @if (Request.Cookies["Language"]?.Value == "ar")
+                        {
+                            <button style="margin-top:10px;" class="nav-link language-toggle" value="en">@Localization.English</button>
+                        }
+                        else
+                        {
+                            <button style="margin-top:10px;" class="nav-link language-toggle" value="ar">@Localization.Arabic</button>
+                        }
+
+                    </li>
+                    <li><a href="@Url.Action("Index","Home")">@Localization.Home</a></li>
+                    @{
+                        if (Session["userId"] != null)
+                        {
+                            SchoolProj.DLL.Services.UserService userService = new SchoolProj.DLL.Services.UserService();
+                            var user = userService.GetUserByID(int.Parse(Session["userId"].ToString()));
+                            if (user != null)
+                            {
+                                if (user.UserType == (int)(SchoolProj.Enum.UserType.Teacher))
+                                {
+                                    <li><a href="@Url.Action("Index","ClassTeacher")">@Localization.Classes</a></li>
+                                }
+                                else if (user.UserType == (int)(SchoolProj.Enum.UserType.Student))
+                                {
+                                    <li><a href="@Url.Action("Index","StudentMark")">@Localization.Marks </a></li>
+                                }
+                            }
+                        }
+                    }
+                    <li><a href="@Url.Action("Blog","Home")">@Localization.Blogs</a></li>
+                    <li><a href="@Url.Action("Contact","Home")">@Localization.Contact</a></li>
+                    @if (Session["userId"] != null)
+                    {
+                        <li><a href="@Url.Action("logout", "Login")">@Localization.Logout</a></li>
+                        <li><a href="@Url.Action("ChangePassword","Login")">@Localization.ChangePassword</a></li>
+
+                    }
+                    else
+                    {
+                        <li><a href="@Url.Action("Login", "Login")">@Localization.login</a></li>
+
+                    }
+
+
+                </ul>
+            </nav>
+            <!-- /Navigation -->
+
+        </div>
+    </header>
+    <div id="home" class="hero-area">
+
+        <!-- Backgound Image -->
+        <div class="bg-image bg-parallax bg-home-image overlay" style="background-image: url('../../wwwroot/template/img/home-background.jpg');"></div>
+        <!-- /Backgound Image -->
+
+        <div class="home-wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h1 class="white-text">Edusite Free Online Training Courses</h1>
+                        <p class="lead white-text">Libris vivendo eloquentiam ex ius, nec id splendide abhorreant, eu pro alii error homero.</p>
+                        <a class="main-button icon-button" href="#">Get Started!</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- /Header -->
+    @RenderBody()
+    <!-- Footer -->
+    <footer id="footer" class="section">
+
+        <!-- container -->
+        <div class="container">
+
+            <!-- row -->
+            <div class="row">
+
+                <!-- footer logo -->
+                <div class="col-md-6">
+                    <div class="footer-logo">
+                        <a class="logo" href="index.html">
+                            <img src="~/Content/template/img/logo.png" alt="logo">
+                        </a>
+                    </div>
+                </div>
+                <!-- footer logo -->
+                <!-- footer nav -->
+                <div class="col-md-6">
+                    <ul class="footer-nav">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Courses</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Contact</a></li>
+
+                    </ul>
+                </div>
+                <!-- /footer nav -->
+
+            </div>
+            <!-- /row -->
+            <!-- row -->
+            <div id="bottom-footer" class="row">
+
+                <!-- social -->
+                <div class="col-md-4 col-md-push-8">
+                    <ul class="footer-social">
+                        <li><a href="#" class="facebook"><i class="fa fa-facebook"></i></a></li>
+                        <li><a href="#" class="twitter"><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="#" class="google-plus"><i class="fa fa-google-plus"></i></a></li>
+                        <li><a href="#" class="instagram"><i class="fa fa-instagram"></i></a></li>
+                        <li><a href="#" class="youtube"><i class="fa fa-youtube"></i></a></li>
+                        <li><a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a></li>
+                    </ul>
+                </div>
+                <!-- /social -->
+                <!-- copyright -->
+                <div class="col-md-8 col-md-pull-4">
+                    <div class="footer-copyright">
+                    </div>
+                </div>
+                <!-- /copyright -->
+
+            </div>
+            <!-- row -->
+
+        </div>
+        <!-- /container -->
+
+    </footer>
+    <!-- /Footer -->
+    <!-- preloader -->
+    <div id='preloader'><div class='preloader'></div></div>
+    <script src="~/Content/template/js/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Add event listener to language toggle buttons
+            $('.language-toggle').click(function () {
+                var selectedLanguage = $(this).val();
+                $.ajax({
+                    url: '/Home/ChangeLanguage',
+                    type: 'POST',
+                    data: { language: selectedLanguage },
+                    success: function (result) {
+                        window.location.reload();
+                    },
+                });
+            });
+        });
+    </script>
+    <script src
+    <script src="~/Content/template/js/bootstrap.min.js"></script>
+    <script src="~/Content/template/js/google-map.js"></script>
+    <script src="~/Content/template/js/main.js"></script>
+    <script>
+    </script>
+</body>
+</html>

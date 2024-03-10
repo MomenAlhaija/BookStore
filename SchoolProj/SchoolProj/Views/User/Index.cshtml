@@ -1,0 +1,66 @@
+﻿@{ViewBag.Title = Localization.Users;}
+@using SchoolProj.DLL.Model
+@using SchoolProj.Enum;
+@using SchoolProj.Langauges
+<div style="width:100%;padding:1%">
+    <a class="btn btn-info mb-3" href="@Url.Action("AddUser")">@Localization.AddUser</a>
+    <div class="col">
+        <table class="table bg-white rounded shadow-sm  table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">@Localization.Email</th>
+                    <th scope="col">@Localization.FirstName</th>
+                    <th>@Localization.UserType</th>
+                    <th>@Localization.Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td>@user.UserName</td>
+                        <td>@user.FullName</td>
+                        <td>@((UserType)user.UserType)</td>
+                        <td>
+                            <a class="btn btn-info" href="@Url.Action("EditUser", "User", new {userId=@user.UserId})">@Localization.Edit</a>
+                            <a class="btn btn-secondary" href="@Url.Action("ResetPassword",new { userId = user.UserId })" >@Localization.ResetPassword</a>
+                            <a class="btn btn-danger" onclick="deleteUser(@user.UserId)">@Localization.Delete</a>
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    function deleteUser(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You will not be able to recover this class!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("Delete")",
+                    data: { userId: id },
+                    success: function () {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'User Deleted Successfully',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 1500);
+                    }
+                });
+            }
+        });
+    }
+</script>

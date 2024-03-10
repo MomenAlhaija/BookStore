@@ -1,0 +1,38 @@
+﻿@using SchoolProj.Enum;
+@using SchoolProj.DLL.Model
+@using SchoolProj.DLL.Shared
+@using SchoolPro.shared.Consts
+@using SchoolProj.Langauges
+@{
+    ViewBag.Title = "AddUser";
+}
+@model UserModel
+<form method="post" style="width:100%;padding:0% 5%">
+    <h3 class="text text-danger">@ViewBag.ErrorMessage</h3>
+    <div class="form-group">
+        <label for="@nameof(Model.UserName)">@Localization.Email</label>
+        <input type="email" class="form-control" value="@Model.UserName" id="UserName" placeholder="@Localization.PleaseEnter @Localization.Email" name="@nameof(Model.UserName)" maxlength="@PersonConsts.MaxUserNameLength" pattern="@PersonConsts.EmailFormat">
+        @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        <label for="@nameof(Model.Password)">@Localization.Password</label>
+        <input type="password" value="@Model.Password" class="form-control" id="Password" placeholder="@Localization.PleaseEnter @Localization.Password" name="@nameof(Model.Password)" pattern="@PersonConsts.PasswordFormat" maxlength="@PersonConsts.MaxPasswordLength">
+        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        <label for="@nameof(Model.FullName)">@Localization.FullName</label>
+        <input type="text" value="@Model.FullName" class="form-control" id="FullNameId" placeholder="@Localization.PleaseEnter @Localization.FullName" name="@nameof(Model.FullName)" maxlength="@PersonConsts.MaxFullNameLength" required>
+        @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        <label for="@nameof(Model.UserType)">@Localization.UserType</label>
+        <select class="form-select" name="@nameof(Model.UserType)" required>
+            <option value="@((int)UserType.Student)">@(UserType.Student)</option>
+            <option value="@((int)UserType.Teacher)">@(UserType.Teacher)</option>
+            <option value="@((int)UserType.Admin)">@(UserType.Admin)</option>
+        </select>
+        @Html.ValidationMessageFor(model => model.UserType, "", new { @class = "text-danger" })
+    </div>
+    <button class="btn btn-primary" style="margin-top:25px" type="submit">@Localization.Add</button>
+    <a class="btn btn-secondary" style="margin-top:26px" href="@Url.Action("Index")">@Localization.BackToList</a>
+</form>

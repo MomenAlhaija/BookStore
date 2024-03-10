@@ -1,0 +1,74 @@
+﻿@model IEnumerable<SchoolProj.DLL.Model.MaterialModel>
+
+@{
+    ViewBag.Title = Localization.Materials;
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@using SchoolProj.Langauges
+<div style="width:100%;padding:3% 5%">
+    <a class="btn btn-info mb-3 " href="@Url.Action("AddMaterial")">@Localization.AddMaterial</a>
+    <div class="col">
+        <table class="table bg-white rounded shadow-sm  table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">@Localization.MaterialNameAr</th>
+                    <th scope="col">@Localization.MaterialNameEn</th>
+                    <th scope="col">@Localization.Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var material in Model)
+                {
+                    <tr>
+                        <td>
+                            @material.MaterialNameAr
+                        </td>
+                        <td>@material.MaterialNameEn</td>
+                        <td>
+                            <a class="btn btn-info" href="@Url.Action("EditMaterial",new { materialId = @material.Id })">@Localization.Edit</a>
+                            <a class="btn btn-danger" onclick="deleteClass(@material.Id)">@Localization.Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    function deleteClass(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You will not be able to recover this class!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("Delete")",
+                    data: { materialId: id },
+                    success: function () {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Material Deleted Successfully',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 1500);
+                    },
+                    error: function () {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Something went wrong!',
+                        });
+                    }
+                });
+            }
+        });
+    }
+</script>

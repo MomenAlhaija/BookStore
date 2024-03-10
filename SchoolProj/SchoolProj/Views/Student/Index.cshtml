@@ -1,0 +1,80 @@
+﻿@using SchoolProj.Enum;
+@using SchoolProj.Langauges
+@{
+    ViewBag.Title = Localization.Students;
+}
+@model IEnumerable<SchoolProj.DLL.Model.StudentModel>
+<div style="width:100%;padding:1%">
+    <a class="btn btn-info mb-3" href="@Url.Action("AddStudent")">@Localization.AddStudent</a>
+    <div class="col">
+        <table class="table bg-white rounded shadow-sm  table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">@Localization.Email</th>
+                    <th scope="col">@Localization.FullNameAr</th>
+                    <th scope="col">@Localization.FullNameEn</th>
+                    <th scope="col">@Localization.Gender</th>
+                    <th scope="col">@Localization.Age</th>
+                    <th scope="col">@Localization.ClassName</th>
+                    <th>@Localization.Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var student in Model.ToList())
+                {
+                    <tr>
+                        <td>@student.UserName</td>
+                        <td>@student.FullNameAr</td>
+                        <td>@student.FullNameEn</td>
+                        <td>@((Gender)(student.Gender))</td>
+                        <td>@student.Age</td>
+                        <td>@student.ClassName</td>
+                        <td>
+                            <a class="btn btn-info" href="@Url.Action("Edit", new {studentId=student.StudentId})">@Localization.Edit</a>
+                            <a class="btn btn-danger" onclick="deleteStudent(@student.StudentId)">@Localization.Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    function deleteStudent(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You will not be able to recover this class!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("Delete")",
+                    data: { studentId: id },
+                    success: function () {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Student Deleted Successfully',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 1500);
+                    },
+                    error: function () {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Something went wrong!',
+                        });
+                    }
+                });
+            }
+        });
+    }
+</script>
+

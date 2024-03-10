@@ -1,0 +1,51 @@
+﻿
+@{
+    ViewBag.Title = Localization.EditTeacher;
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@using SchoolProj.Langauges
+@using SchoolProj.Enum
+@using SchoolProj.DLL.Shared
+@using SchoolPro.shared.Consts
+@model SchoolProj.DLL.Model.TeacherModel
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+<form method="post" style="width:100%;padding:0% 5%">
+    <input type="hidden" value="@Model.TeacherId" name="@nameof(Model.TeacherId)" contenteditable="false" />
+    <input type="hidden" value="@Model.UserId" name="@nameof(Model.UserId)" contenteditable="false" />
+    <input type="hidden" value="@Model.Password" name="@nameof(Model.Password)" contenteditable="false" />
+    <input type="hidden" value="@Model.UserType" name="@nameof(Model.UserType)" contenteditable="false" />
+    <h3 class="text text-danger">@ViewBag.ErrorMessage</h3>
+    <input type="hidden" value="@Model.TeacherId" name="@nameof(Model.TeacherId)" contenteditable="false" />
+    <input type="hidden" value="@Model.UserId" name="@nameof(Model.UserId)" contenteditable="false" />
+    <div class="form-group">
+        <label for="UserName">@Localization.Email</label>
+        <input type="email" value="@Model.UserName" class="form-control" id="UserName" placeholder="@Localization.PleaseEnter @Localization.Email" name="@nameof(Model.UserName)" required maxlength="@PersonConsts.MaxUserNameLength" pattern="@PersonConsts.EmailFormat">
+        @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        <label for="FullNameAr">@Localization.FullNameAr</label>
+        <input type="text" value="@Model.FullNameAr" class="form-control" id="FullNameAr" placeholder="@Localization.PleaseEnter @Localization.FullNameAr" name="@nameof(Model.FullNameAr)" required pattern="@CommonConst.FormatNameAr" maxlength="@PersonConsts.MaxFullNameLength" />
+        @Html.ValidationMessageFor(model => model.FullNameAr, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        <label for="FullNameEn">@Localization.FullNameEn</label>
+        <input type="text" value="@Model.FullNameEn" class="form-control" id="FullNameEn" placeholder="@Localization.PleaseEnter @Localization.FullNameEn" name="@nameof(Model.FullNameEn)" pattern="@CommonConst.FormatNameAr" maxlength="@PersonConsts.MaxFullNameLength">
+        @Html.ValidationMessageFor(model => model.FullNameEn, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        <label for="Gender">@Localization.Gender</label>
+        <select class="form-select" id="Gender" name="@nameof(Model.Gender)" required>
+            <option value="@((int)Gender.Male)" @(Model.Gender == (int)Gender.Male ? "selected" : "")>@(Gender.Male)</option>
+            <option value="@((int)Gender.Female)" @(Model.Gender == (int)Gender.Female ? "selected" : "")>@(Gender.Female)</option>
+        </select>
+        @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        <label for="ClassId">@Localization.ClassName</label>
+        @Html.DropDownListFor(model => model.MaterialId, Model.Materials, "-- Select Item --", new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.MaterialId, "", new { @class = "text-danger", @required = "required" })
+    </div>
+    <button class="btn btn-primary" style="margin-top:25px" type="submit">@Localization.SaveChanges</button>
+    <a class="btn btn-secondary" style="margin-top:26px" href="@Url.Action("Index")">@Localization.BackToList</a>
+</form>
